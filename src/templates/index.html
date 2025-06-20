@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>工科创II 大作业 — 对抗样本攻击算法演示</title>
+    <link type="text/css" rel="stylesheet" href="/src/static/index.css" />
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h2>对抗样本攻击演示</h2>
+        <div class="mb-3">
+            <label class="form-label">选择算法：</label>
+            <select id="algorithm" class="form-select">
+                <option value="fgsm">FGSM</option>
+                <option value="pgd">PGD</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" onclick="runAttack()">运行</button>
+
+        <h4 class="mt-4">运行日志：</h4>
+        <pre id="logBox" class="bg-light p-3 rounded border" style="height:200px; overflow-y:auto;">等待运行...</pre>
+
+        <h4 class="mt-4">对抗样本效果图：</h4>
+        <img id="resultImage" src="" class="img-fluid border" style="max-height:300px;" />
+    </div>
+
+    <script src="../static/index.js"></script>
+</body>
+
+</html>
