@@ -7,25 +7,33 @@ function switchAlgo(algo) {
 }
 
 function runAttack(algo) {
+  const btn = document.getElementById("run-btn-" + algo);
   const logBox = document.getElementById("logBox-" + algo);
-  const resultImage = document.getElementById("resultImage-" + algo);
+  const examplesImage = document.getElementById("examplesImage-" + algo);
+  const effectImage = document.getElementById("effectImage-" + algo);
 
-  logBox.textContent = "运行中...\n";
-  resultImage.src = "";
+  btn.disabled = true;
+  btn.innerHTML = `
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    运行中...
+  `;
 
-  fetch("/run", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ algorithm: algo })
-  })
-  .then(res => res.json())
-  .then(data => {
-    logBox.textContent += data.output;
-    if (data.image) {
-      resultImage.src = data.image + "?t=" + Date.now();  // 防缓存
-    }
-  })
-  .catch(err => {
-    logBox.textContent += "\n❌ 运行出错: " + err;
+  logBox.textContent = "";
+  examplesImage.src = "";
+  effectImage.src = "";
+
+  const source = new EventSource(`/stream/${algo}`);
+
+  source.onmessage = function(e) {
+    logBox.textContent += e.data + "\n";
+    logBox.scrollTop = logBox.scrollHeight;
+  };
+
+  source.addEventListener("done", function(e) {
+    source.close();
+    btn.disabled = false;
+    btn.innerHTML = `▶️ 运行 ${algo} 算法`;
+    examplesImage.src = `/static/img/${algo}/${algo}_examples.png?t=${Date.now()}`;
+    effectImage.src = `/static/img/${algo}/${algo}_effect.png?t=${Date.now()}`;
   });
 }
