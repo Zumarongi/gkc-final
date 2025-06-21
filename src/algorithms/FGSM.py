@@ -10,7 +10,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # 设置参数及模型参数路径
-epsilons = [0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
+# epsilons = [0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
+epsilons = [0.0]
 pretrained_model = "algorithms/lenet_mnist_model.pth"
 use_cuda = True
 
@@ -34,20 +35,20 @@ class Net(nn.Module):
         return F.log_softmax(x, dim=1)
 
 # 设置 MNIST 测试数据集的数据加载器
-test_loader = torch.utils.data.DataLoader(
-    datasets.MNIST(
-        "./data",
-        train=False,
-        download=True,
-        transform=transforms.Compose(
-            [
-                transforms.ToTensor(),
-            ]
-        ),
-    ),
-    batch_size=1,
-    shuffle=True,
-)
+# test_loader = torch.utils.data.DataLoader(
+#     datasets.MNIST(
+#         "./data",
+#         train=False,
+#         download=True,
+#         transform=transforms.Compose(
+#             [
+#                 transforms.ToTensor(),
+#             ]
+#         ),
+#     ),
+#     batch_size=1,
+#     shuffle=True,
+# )
 
 # 加载预训练模型
 print("CUDA Available: ",torch.cuda.is_available())
@@ -134,7 +135,7 @@ plt.title("Accuracy vs Epsilon")
 plt.xlabel("Epsilon")
 plt.ylabel("Accuracy")
 
-filename = "/static/img/FGSM/FGSM_effect.png"
+filename = "static/img/FGSM/FGSM_effect.png"
 plt.savefig(filename)
 plt.show()
 plt.close()
@@ -155,7 +156,7 @@ for i in range(len(epsilons)):
         plt.imshow(ex, cmap="gray")
 
 plt.tight_layout()
-filename = "/static/img/FGSM/FGSM_examples.png"
+filename = "static/img/FGSM/FGSM_examples.png"
 plt.savefig(filename)
 plt.show()
 plt.close()

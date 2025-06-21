@@ -134,7 +134,7 @@ plt.title("Accuracy vs Epsilon")
 plt.xlabel("Epsilon")
 plt.ylabel("Accuracy")
 
-filename = "/static/img/RFGSM/RFGSM_effect.png"
+filename = "static/img/RFGSM/RFGSM_effect.png"
 plt.savefig(filename)
 plt.show()
 plt.close()
@@ -155,7 +155,7 @@ for i in range(len(epsilons)):
         plt.imshow(ex, cmap="gray")
 
 plt.tight_layout()
-filename = "/static/img/RFGSM/RFGSM_examples.png"
+filename = "static/img/RFGSM/RFGSM_examples.png"
 plt.savefig(filename)
 plt.show()
 plt.close()
