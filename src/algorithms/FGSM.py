@@ -35,20 +35,20 @@ class Net(nn.Module):
         return F.log_softmax(x, dim=1)
 
 # 设置 MNIST 测试数据集的数据加载器
-# test_loader = torch.utils.data.DataLoader(
-#     datasets.MNIST(
-#         "./data",
-#         train=False,
-#         download=True,
-#         transform=transforms.Compose(
-#             [
-#                 transforms.ToTensor(),
-#             ]
-#         ),
-#     ),
-#     batch_size=1,
-#     shuffle=True,
-# )
+test_loader = torch.utils.data.DataLoader(
+    datasets.MNIST(
+        "./data",
+        train=False,
+        download=True,
+        transform=transforms.Compose(
+            [
+                transforms.ToTensor(),
+            ]
+        ),
+    ),
+    batch_size=1,
+    shuffle=True,
+)
 
 # 加载预训练模型
 print("CUDA Available: ",torch.cuda.is_available())
