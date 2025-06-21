@@ -1,3 +1,5 @@
+print("Running FGSM Attack...")
+
 # 导入第三方库
 import torch
 import torch.nn as nn
@@ -8,10 +10,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # 设置参数及模型参数路径
-epsilons = np.linspace(0, 0.4, 11, endpoint=True)
-# [0, 0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25, 0.275, 0.3, 0.325, 0.35, 0.375, 0.4]
-rootDir = "/home/zumarongi/projects/ai-security/exp2"
-pretrained_model = rootDir + "/lenet_mnist_model.pth"
+epsilons = [0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
+pretrained_model = "algorithms/lenet_mnist_model.pth"
 use_cuda = True
 
 # 定义模型
@@ -56,6 +56,7 @@ model = Net().to(device)
 model.load_state_dict(
     torch.load(pretrained_model, map_location="cpu", weights_only=True)
 )
+print("Model loaded.")
 model.eval()
 
 
@@ -133,7 +134,7 @@ plt.title("Accuracy vs Epsilon")
 plt.xlabel("Epsilon")
 plt.ylabel("Accuracy")
 
-filename = rootDir + "/FGSM_attack_effect.png"
+filename = "/static/img/FGSM/FGSM_effect.png"
 plt.savefig(filename)
 plt.show()
 plt.close()
@@ -154,7 +155,7 @@ for i in range(len(epsilons)):
         plt.imshow(ex, cmap="gray")
 
 plt.tight_layout()
-filename = rootDir + "/FGSM_attack_examples.png"
+filename = "/static/img/FGSM/FGSM_examples.png"
 plt.savefig(filename)
 plt.show()
 plt.close()

@@ -1,3 +1,5 @@
+print("Running PGD Attack...")
+
 # 导入第三方库
 import torch
 import torch.nn as nn
@@ -9,11 +11,8 @@ import matplotlib.pyplot as plt
 
 # 设置参数及模型参数路径
 epsilons = [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
-# epsilons = np.linspace(0, 0.4, 11, endpoint=True)
-rootDir = "/home/zumarongi/projects/ai-security/exp2"
-pretrained_model = rootDir + "/lenet_mnist_model.pth"
+pretrained_model = "algorithms/lenet_mnist_model.pth"
 use_cuda = True
-
 
 # 定义模型
 class Net(nn.Module):
@@ -36,20 +35,20 @@ class Net(nn.Module):
 
 
 # 设置 MNIST 测试数据集的数据加载器
-# test_loader = torch.utils.data.DataLoader(
-#     datasets.MNIST(
-#         "./data",
-#         train=False,
-#         download=True,
-#         transform=transforms.Compose(
-#             [
-#                 transforms.ToTensor(),
-#             ]
-#         ),
-#     ),
-#     batch_size=1,
-#     shuffle=True,
-# )
+test_loader = torch.utils.data.DataLoader(
+    datasets.MNIST(
+        "./data",
+        train=False,
+        download=True,
+        transform=transforms.Compose(
+            [
+                transforms.ToTensor(),
+            ]
+        ),
+    ),
+    batch_size=1,
+    shuffle=True,
+)
 
 # 加载预训练模型
 print("CUDA Available: ", torch.cuda.is_available())
@@ -58,6 +57,7 @@ model = Net().to(device)
 model.load_state_dict(
     torch.load(pretrained_model, map_location="cpu", weights_only=True)
 )
+print("Model loaded.")
 model.eval()
 
 
@@ -122,19 +122,10 @@ accuracies = []
 examples = []
 
 # 在不同参数下测试攻击性能并绘制图像
-# for eps in epsilons:
-#     acc, ex = test(model, device, test_loader, eps)
-#     accuracies.append(acc)
-#     examples.append(ex)
-
-corrects = [9810, 9323, 7941, 5529, 2272, 640, 121]
-accuracies = [corrects[i] / 10000 for i in range(7)]
-for i in range(7):
-    print(
-        "Epsilon: {}\tTest Accuracy = {} / {} = {}".format(
-            epsilons[i], corrects[i], 10000, accuracies[i]
-        )
-    )
+for eps in epsilons:
+    acc, ex = test(model, device, test_loader, eps)
+    accuracies.append(acc)
+    examples.append(ex)
 
 plt.figure(figsize=(5, 5))
 plt.plot(epsilons, accuracies, "*-")
@@ -143,7 +134,7 @@ plt.xticks(np.arange(0, 0.35, step=0.05))
 plt.title("Accuracy vs Epsilon")
 plt.xlabel("Epsilon")
 plt.ylabel("Accuracy")
-filename = rootDir + "/PGD_attack_effect.png"
+filename = "static/img/PGD/PGD_effect.png"
 plt.savefig(filename)
 plt.show()
 plt.close()
@@ -163,6 +154,6 @@ for i in range(len(epsilons)):
         plt.title("{} -> {}".format(orig, adv))
         plt.imshow(ex, cmap="gray")
 plt.tight_layout()
-filename = rootDir + "/PGD_attack_examples.png"
+filename = "static/img/PGD/PGD_examples.png"
 plt.savefig(filename)
 plt.show()
