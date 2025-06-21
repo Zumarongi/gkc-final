@@ -129,7 +129,7 @@ for eps in epsilons:
 plt.figure(figsize=(5, 5))
 plt.plot(epsilons, accuracies, "*-")
 plt.yticks(np.arange(0, 1.1, step=0.1))
-plt.xticks(np.arange(0, 0.44, step=0.04))
+plt.xticks(np.arange(0, 0.31, step=0.05))
 plt.title("Accuracy vs Epsilon")
 plt.xlabel("Epsilon")
 plt.ylabel("Accuracy")
