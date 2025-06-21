@@ -141,10 +141,11 @@ plt.xticks(np.arange(0, 0.35, step=0.05))
 plt.title("Accuracy vs Epsilon")
 plt.xlabel("Epsilon")
 plt.ylabel("Accuracy")
+
 filename = "static/img/PGD_L2/PGD_L2_effect.png"
 plt.savefig(filename)
-plt.show()
-plt.close()
+# plt.show()
+# plt.close()
 
 # 绘制不同epsilon值下的对抗样本示例
 cnt = 0
@@ -163,4 +164,4 @@ for i in range(len(epsilons)):
 plt.tight_layout()
 filename = "static/img/PGD_L2/PGD_L2_examples.png"
 plt.savefig(filename)
-plt.show()
+# plt.show()

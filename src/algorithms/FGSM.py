@@ -60,19 +60,12 @@ model.load_state_dict(
 print("Model loaded.")
 model.eval()
 
-
-# FGSM攻击代码
 def fgsm_attack(image, epsilon, data_grad):
-    # 取符号梯度
     sign_data_grad = data_grad.sign()
-    # 生成对抗样本
     perturbed_image = image + epsilon * sign_data_grad
-    # 将像素值限制在 [0,1] 范围
     perturbed_image = torch.clamp(perturbed_image, 0, 1)
     return perturbed_image
 
-
-# 攻击效果测试代码
 def test(model, device, test_loader, epsilon):
     correct = 0
     adv_examples = []
@@ -137,8 +130,8 @@ plt.ylabel("Accuracy")
 
 filename = "static/img/FGSM/FGSM_effect.png"
 plt.savefig(filename)
-plt.show()
-plt.close()
+# plt.show()
+# plt.close()
 
 # 绘制不同epsilon值下的对抗样本示例
 cnt = 0
@@ -158,5 +151,5 @@ for i in range(len(epsilons)):
 plt.tight_layout()
 filename = "static/img/FGSM/FGSM_examples.png"
 plt.savefig(filename)
-plt.show()
-plt.close()
+# plt.show()
+# plt.close()
