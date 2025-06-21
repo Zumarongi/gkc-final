@@ -5,29 +5,96 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>工科创II 大作业 — 对抗样本攻击算法演示</title>
-    <link type="text/css" rel="stylesheet" href="/src/static/index.css" />
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" async></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 
 <body>
-    <div class="container mt-4">
-        <h2>对抗样本攻击演示</h2>
-        <div class="mb-3">
-            <label class="form-label">选择算法：</label>
-            <select id="algorithm" class="form-select">
-                <option value="fgsm">FGSM</option>
-                <option value="pgd">PGD</option>
-            </select>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">对抗样本攻击</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="switchAlgo('FGSM')">FGSM</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="switchAlgo('PGD')">PGD</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="switchAlgo('PGD_L2')">PGD_L2</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="switchAlgo('CW')">CW</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="switchAlgo('MIM')">MIM</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="switchAlgo('RFGSM')">RFGSM</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <button class="btn btn-primary" onclick="runAttack()">运行</button>
+    </nav>
 
-        <h4 class="mt-4">运行日志：</h4>
-        <pre id="logBox" class="bg-light p-3 rounded border" style="height:200px; overflow-y:auto;">等待运行...</pre>
-
-        <h4 class="mt-4">对抗样本效果图：</h4>
-        <img id="resultImage" src="" class="img-fluid border" style="max-height:300px;" />
+    <div id="FGSM-section" class="container py-4 section active-section">
+        <h2>FGSM 攻击</h2>
+        {% set algo = 'FGSM' %}
+        {% set description = "FGSM（快速梯度符号法）是一种一次性对抗攻击算法，通过沿损失函数梯度的符号方向对输入施加最大幅度扰动，生成对抗样本。公式为：\n$$x' = x + \\varepsilon
+        \\cdot \\mathrm{sign}\\bigl(\\nabla_x J(x, y)\\bigr)$$\n其中， \(\\varepsilon\) 控制扰动强度， \(J\) 为模型损失。" %}
+        {% include 'section.html' %}
     </div>
 
-    <script src="../static/index.js"></script>
+    <div id="PGD-section" class="container py-4 section">
+        <h2>PGD 攻击</h2>
+        {% set algo = 'PGD' %}
+        {% set description = "PGD（投影梯度下降）是迭代对抗攻击算法，每次按梯度方向微调输入，并投影到允许的\(\\varepsilon\)球，构造对抗样本。迭代规则为：\n$$x^{t+1} =
+        \\text{Clip}_{[x-\\varepsilon,x+\\varepsilon]}\\big(x^t + \\alpha \\cdot \\text{sign}(\\nabla_x
+        J(x^t,y))\\big)$$\n相比 FGSM 更有效。" %}
+        {% include 'section.html' %}
+    </div>
+
+    <div id="PGD_L2-section" class="container py-4 section">
+        <h2>PGD_L2 攻击</h2>
+        {% set algo = 'PGD_L2' %}
+        {% set description = "PGD_L2 是 PGD 的变体，使用 L2 范数限制扰动。每次迭代按梯度方向微调输入，并投影到 L2 范数球内，公式为：\n$$x^{t+1} =
+        \\text{Clip}_{B(x^t, \\varepsilon)}\\big(x^t + \\alpha \\cdot \\frac{\\nabla_x J(x^t,y)}{\\|\\nabla_x
+        J(x^t,y)\\|_2}\\big)$$\n其中， \(B(x, \\varepsilon)\) 表示以 \(x\) 为中心、半径为 \(\\varepsilon\) 的 L2 范数球。" %}
+        {% include 'section.html' %}
+    </div>
+
+    <div id="CW-section" class="container py-4 section">
+        <h2>CW 攻击</h2>
+        {% set algo = 'CW' %}
+        {% set description = "CW（Carlini-Wagner）攻击是基于优化的对抗攻击方法，通过最小化扰动和分类错误的目标函数，生成对抗样本。其目标函数为：\n$$\\min_{x'} \\|x' -
+        x\\|_2 + c \\cdot f(x')$$\n其中， \(f(x')\) 是分类器对 \(x'\) 的输出， \(c\) 是平衡项。\nCW 攻击通常使用 L2 范数来限制扰动大小，并通过优化算法（如
+        Adam）求解。" %}
+        {% include 'section.html' %}
+    </div>
+
+    <div id="MIM-section" class="container py-4 section">
+        <h2>MIM 攻击</h2>
+        {% set algo = 'MIM' %}
+        {% set description = "MIM（动量迭代法）是在 PGD 基础上引入动量项，以缓解纯梯度更新震荡并提升对抗样本可迁移性。每步先累积动量：\n$$g^{t+1} = \mu\,g^t + \\frac{\\nabla_x J(x^t,y)}{\|\\nabla_x J(x^t,y)\|_1}$$\n再按动量方向更新并投影：\n$$x^{t+1} = \Pi_{[x^0-\\varepsilon,x^0+\\varepsilon]}\\bigl(x^t + \\alpha\,\mathrm{sign}(g^{t+1})\\bigr)$$\n
+        其中，\(\mu\) 为动量因子，\(\\alpha\) 为步长。
+        " %}
+        {% include 'section.html' %}
+    </div>
+
+    <div id="RFGSM-section" class="container py-4 section">
+        <h2>RFGSM 攻击</h2>
+        {% set algo = 'RFGSM' %}
+        {% set description = "RFGSM（随机 FGSM）是 FGSM 的一种变体，通过在每次迭代中添加随机噪声来增强攻击效果。每次迭代按梯度方向微调输入，并添加随机噪声：\n$$x' = x +
+        \\varepsilon \\cdot \\mathrm{sign}(\\nabla_x J(x,y)) + \\eta$$\n其中， \(\\eta\) 是随机噪声。\nRFGSM
+        通过引入随机性来增加对抗样本的多样性，通常比 FGSM 更有效。" %}
+        {% include 'section.html' %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 </body>
 
 </html>

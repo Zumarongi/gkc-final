@@ -15,10 +15,10 @@ def run_algorithm():
     data = request.get_json()
     algo = data.get("algorithm")
 
-    if algo not in ["fgsm", "pgd"]:
+    if algo not in ["PGD", "PGD_L2", "FGSM", "CW", "MIM", "RFGSM"]:
         return jsonify({"output": "无效算法", "image": None})
 
-    script = f"algorithms/{algo.upper()}.py"
+    script = f"algorithms/{algo}.py"
 
     try:
         # 运行脚本并捕获终端输出
