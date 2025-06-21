@@ -1,5 +1,5 @@
-<div class="mb-3">
-  <button class="btn btn-primary" onclick="runAttack('{{ algo }}')">▶️ 运行 {{ algo }} 算法</button>
+<div class="mt-3 mb-4">
+  <button id="run-btn-{{ algo }}" class="btn btn-primary" onclick="runAttack('{{ algo }}')">▶️ 运行 {{ algo }} 算法</button>
 </div>
 
 <div class="accordion mb-3" id="introAccordion-{{ algo }}">
@@ -20,11 +20,11 @@
 <div class="accordion mb-3" id="logAccordion-{{ algo }}">
   <div class="accordion-item">
     <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#logCollapse-{{ algo }}">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#logCollapse-{{ algo }}">
         运行日志
       </button>
     </h2>
-    <div id="logCollapse-{{ algo }}" class="accordion-collapse collapse">
+    <div id="logCollapse-{{ algo }}" class="accordion-collapse collapse show">
       <div class="accordion-body">
         <pre id="logBox-{{ algo }}" class="bg-dark text-light p-3 rounded" style="min-height: 200px; max-height: 500px; overflow-y: auto;">等待运行...</pre>
       </div>
@@ -35,13 +35,14 @@
 <div class="accordion" id="imgAccordion-{{ algo }}">
   <div class="accordion-item">
     <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#imgCollapse-{{ algo }}">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#imgCollapse-{{ algo }}">
         攻击结果图
       </button>
     </h2>
-    <div id="imgCollapse-{{ algo }}" class="accordion-collapse collapse">
+    <div id="imgCollapse-{{ algo }}" class="accordion-collapse collapse show">
       <div class="accordion-body">
-        <img id="resultImage-{{ algo }}" src="" class="img-thumbnail" style="max-height:300px;" />
+        <img id="examplesImage-{{ algo }}" src="" class="img-thumbnail" style="max-height:300px;" />
+        <img id="effectImage-{{ algo }}" src="" class="img-thumbnail" style="max-height:300px;" />
       </div>
     </div>
   </div>

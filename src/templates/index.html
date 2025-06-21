@@ -7,7 +7,6 @@
     <title>工科创II 大作业 — 对抗样本攻击算法演示</title>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <script src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" async></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 
@@ -25,9 +24,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" onclick="switchAlgo('PGD_L2')">PGD_L2</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="switchAlgo('CW')">CW</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" onclick="switchAlgo('MIM')">MIM</a>
@@ -63,15 +59,6 @@
         {% set description = "PGD_L2 是 PGD 的变体，使用 L2 范数限制扰动。每次迭代按梯度方向微调输入，并投影到 L2 范数球内，公式为：\n$$x^{t+1} =
         \\text{Clip}_{B(x^t, \\varepsilon)}\\big(x^t + \\alpha \\cdot \\frac{\\nabla_x J(x^t,y)}{\\|\\nabla_x
         J(x^t,y)\\|_2}\\big)$$\n其中， \(B(x, \\varepsilon)\) 表示以 \(x\) 为中心、半径为 \(\\varepsilon\) 的 L2 范数球。" %}
-        {% include 'section.html' %}
-    </div>
-
-    <div id="CW-section" class="container py-4 section">
-        <h2>CW 攻击</h2>
-        {% set algo = 'CW' %}
-        {% set description = "CW（Carlini-Wagner）攻击是基于优化的对抗攻击方法，通过最小化扰动和分类错误的目标函数，生成对抗样本。其目标函数为：\n$$\\min_{x'} \\|x' -
-        x\\|_2 + c \\cdot f(x')$$\n其中， \(f(x')\) 是分类器对 \(x'\) 的输出， \(c\) 是平衡项。\nCW 攻击通常使用 L2 范数来限制扰动大小，并通过优化算法（如
-        Adam）求解。" %}
         {% include 'section.html' %}
     </div>
 
